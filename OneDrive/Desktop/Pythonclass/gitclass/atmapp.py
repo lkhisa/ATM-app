@@ -1,10 +1,6 @@
-#register -first name, last name, password, email  generate user account
-#login -account number, password
-#bank operations
-#Initializing the system
-
 import random
-database={}  #dictionary
+import datetime
+database={}  
 def init():
 
     print("Welcome to bankPHP")
@@ -24,16 +20,43 @@ def login():
     print("********LOGIN********")
 
     accountNumberFromUser=int(input("What is your account number? \n"))
-    password=input("What is your password? \n")
+    
+    is_valid_account_number=account_number_validation(accountNumberFromUser)
+    
+    if is_valid_account_number:
 
-    for accountNumber, userDetails in database.items():
-        if(accountNumber==accountNumberFromUser):
-            if(userDetails[3]==password):
-                bankOperation(userDetails)
+        password=input("What is your password? \n")
 
-    print('Invalid account or password')
-    login()            
+        for accountNumber, userDetails in database.items():
+            if accountNumber==int(accountNumberFromUser):
+                if(userDetails[3]==password):
+                    bankOperation(userDetails)
 
+        print('Invalid account or password')
+        login()   
+    else:
+        init()                   
+def account_number_validation(accountNumberFromUser):
+    if(accountNumberFromUser):
+
+        if len(str(accountNumberFromUser)) ==10:
+
+            try:
+                int(accountNumberFromUser)
+                return True
+            except ValueError:
+                print("Invalid account number, account number should be an integer")
+                return False 
+            except TypeError:
+                print("Invalid account number")
+                return False       
+
+        else:
+            print("Account number can only be 10 digits")    
+
+
+    else:
+        print('Account number is a required field')    
 
 def register():
       print("******REGISTER*****")     
@@ -44,10 +67,10 @@ def register():
 
       accountNumber=generateAccountNumber()
 
-      database[accountNumber]=[first_name, last_name, email, password]
+      database[accountNumber]=[first_name, last_name, email, password, 0]
 
       #return database
-      import datetime
+      
       e=datetime.datetime.now()
       print("Your account has been created")
       print("=== ==== ===== ===== ===== ==")
@@ -101,6 +124,4 @@ def complain():
 def generateAccountNumber():
     return random.randrange(1111111111, 9999999999)
 
-   ###Actual banking system
 init() 
-#print(generateAccountNumber())
