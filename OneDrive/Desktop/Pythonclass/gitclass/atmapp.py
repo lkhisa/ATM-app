@@ -1,6 +1,6 @@
 import random
 import datetime
-database={}  
+database={1175761664: ['Loretta', 'Khisa', 'lorettakhisa15@gmail.com', 'lolop'], "Balance":200}  
 def init():
 
     print("Welcome to bankPHP")
@@ -67,9 +67,8 @@ def register():
 
       accountNumber=generateAccountNumber()
 
-      database[accountNumber]=[first_name, last_name, email, password, 0]
-
-      #return database
+      database={accountNumber:[first_name, last_name, email, password], "Balance":0
+      }
       
       e=datetime.datetime.now()
       print("Your account has been created")
@@ -105,15 +104,22 @@ def bankOperation(user):
             bankOperation(user)    
 
 def withdrawalOperation():
-    print("How much would you like to withdraw?")
+     print("How much would you like to withdraw?")
 
     amount=int(input('Write amount \n'))
-    print('Take your cash')
+    if(database["Balance"]>amount):
+        print('Take your cash')
+        balance=database["Balance"]-amount
+        print("Your balance is %d" % balance)
+    else:
+        print("you cannot withdraw that amount")
+
 def depositOperation():
     print("How much would you like to deposit?")
 
     amount=int(input('Write amount \n'))
-    print('Thank you for banking with us.')
+    balance=database["Balance"]+amount
+    print('Your balance is %d' % balance)
 
 def complain():
     print('What issue would you like to report?')
